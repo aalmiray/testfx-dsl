@@ -1,0 +1,121 @@
+= TestFX-DSL
+:linkattrs:
+:project-name: testfx-dsl
+:project-version: 0.1.0
+
+////
+image:http://img.shields.io/travis/aalmiray/{project-name}/master.svg["Build Status", link="https://travis-ci.org/aalmiray/{project-name}"]
+image:http://img.shields.io/coveralls/aalmiray/{project-name}/master.svg["Coverage Status", link="https://coveralls.io/r/aalmiray/{project-name}"]
+////
+image:http://img.shields.io/badge/license-EUPL1.1-blue.svg["EUPL 1.1", link="http://ec.europa.eu/idabc/eupl.html"]
+image:https://api.bintray.com/packages/aalmiray/kordamp/{project-name}/images/download.svg[link="https://bintray.com/aalmiray/kordamp/{project-name}/_latestVersion"]
+
+---
+
+TestFX-DSL aims to bring DSL capabilities on top of link:https://github.com/TestFX/TestFX[TestFX]. Inspired by
+link:http://www.gebish.org/[Geb], this DSL enables a fluent interface design on top of the facilities exposed
+by TestFX.
+
+Instead of writing code such as
+
+[source, java]
+----
+clickOn("#showSettingsButton");
+JFXDrawer settingsPanel = lookup("#drawer").query();
+waitUntil(settingsPanel, isShown(), defaultWaitTimeout());
+verifyThat("#username", hasText(defaultUsernameValue));
+clickOn("#username").eraseText(defaultUsernameValue.length());
+clickOn("#username").write(usernameValue);
+verifyThat("#username", hasText(usernameValue));
+----
+
+write it like this
+
+[source, java]
+----
+$("#showSettingsButton")
+    .click()
+.$$("#drawer")
+    .waitUntil(isShown(), defaultWaitTimeout())
+.$$("#username")
+    .verifyThat(hasText(defaultUsernameValue))
+    .click()
+    .eraseText(defaultUsernameValue.length())
+    .write(usernameValue)
+    .verifyThat(hasText(usernameValue));
+----
+
+The DSL allows you to chain method calls and remember the last `NodeQuery` made. It's easy to get started, just add the
+following import statement to your test case:
+
+[source, java]
+----
+import static org.kordamp.testfx.QueryChain.$;
+----
+
+== Installing
+
+You can get the latest version of **TestFX-DSL** directly from link:https://bintray.com[Bintray's JCenter] repository.
+
+[source, groovy]
+[subs="verbatim,attributes"]
+.Gradle
+----
+testCompile 'org.kordamp.testfx:testfx-dsl:{project-version}
+----
+
+[source, xml]
+[subs="verbatim,attributes"]
+.Maven
+----
+<dependency>
+    <groupId>org.kordamp.testfx</groupId>
+    <artifactId>testfx-dsl</artifactId>
+    <artifactId>{project-version}</artifactId>
+    <scope>test</scope>
+</dependency>
+
+<repositories>
+    <repository>
+        <id>jcenter</id>
+        <url>http://jcenter.bintray.com/</url>
+    </repository>
+</repositories>
+----
+
+== Building
+
+You must meet the following requirements:
+
+ * JDK8u60 as a minimum
+ * Gradle 2.14
+
+You may used the included gradle wrapper script if you don't have `gradle` installed.
+
+=== Installing Gradle
+
+.Manual
+
+ . Download Gradle from http://gradle.org/downloads
+ . Unzip the file into a directory without spaces (recommended).
+ . Create a GRADLE_HOME environment variable that points to this directory.
+ . Adjust your PATH environment variable to include $GRADLE_HOME/bin (%GRADLE_HOME%\bin on Windows).
+ . Test your setup by invoking `gradle --version`.
+
+.SDKMAN
+
+ . Follow the instructions found at http://sdkman.io/ to install SDKMAN.
+ . You need a POSIX environment if running Windows. We recommend using Babun Shell (http://babun.github.io/)
+ . Once SDKMAN is installed invoke `sdk install gradle 2.14`.
+ . Test your setup by invoking `gradle --version`.
+
+.Gdub
+
+GDub is a wrapper script that facilitates invoking gradle tasks anywhere within a Gradle project. It's smart enough
+to use the gradle wrapper if available or your global gradle command. This is an optional download.
+
+ . Follow the instructions found at https://github.com/dougborg/gdub to install gdub
+
+=== Next Steps
+
+ . Make a full build issuing `gradle build`.
