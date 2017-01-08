@@ -53,7 +53,7 @@ license {
         java   = 'SLASHSTAR_STYLE'
         groovy = 'SLASHSTAR_STYLE'
     }
-    ext.year = '2016'
+    ext.year = '2016-2017'
     ext.author = 'Andres Almiray'
 }
 
